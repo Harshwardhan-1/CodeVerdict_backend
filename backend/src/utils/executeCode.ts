@@ -76,7 +76,8 @@ return new Promise((resolve,reject)=>{
      if (language === "C++") {
       fs.writeFileSync(path.join(basePath, "main.cpp"), userCode);
      runCommand = 
-     `docker run --rm -v "${dockerPath}:/app" cpp-runner \ bash -c "g++ main.cpp -o main && ./main < input.txt"`;
+      `docker run --rm -v "${dockerPath}:/app" cpp-runner ` +
+        `bash -c "cd /app && g++ main.cpp -o main && ./main < input.txt"`;
     } else if (language === "python") {
       fs.writeFileSync(path.join(basePath, "main.py"), userCode);
       runCommand = 
