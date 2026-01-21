@@ -63,35 +63,29 @@ import { v4 as uuid } from 'uuid';
 export const executeCode=(language:string,userCode:string,input:string):Promise<string>=>{
 return new Promise((resolve,reject)=>{
     const jobId=uuid();
-    const basePath=path.join(__dirname,"..","temp");
+    const basePath=path.join(__dirname,"..","temp",jobId);
     if(!fs.existsSync(basePath)){
         fs.mkdirSync(basePath,{recursive:true});
     }
     const inputPath=path.join(basePath,"input.txt");
     fs.writeFileSync(inputPath,input);
-    let fileName="";
-    let dockerImage="";
+
+
+    let dockerPath=basePath.replace(/\\/g, "/");
     let runCommand="";
      if (language === "C++") {
-      fileName = "main.cpp";
-      dockerImage = "cpp-runner";
-      fs.writeFileSync(path.join(basePath, fileName), userCode);
+      fs.writeFileSync(path.join(basePath, "main.cpp"), userCode);
+     runCommand = 
+     `docker run --rm -v "${dockerPath}:/app" cpp-runner \ bash -c "g++ main.cpp -o main && ./main < input.txt"`;
+    } else if (language === "python") {
+      fs.writeFileSync(path.join(basePath, "main.py"), userCode);
       runCommand = 
-`docker run --rm -v "${basePath}:/app" ${dockerImage} bash -c "g++ main.cpp -o main && ./main < input.txt"`;
-
-    }else if (language === "python") {
-      fileName = "main.py";
-      dockerImage = "python-runner";
-      fs.writeFileSync(path.join(basePath, fileName), userCode);
-      runCommand = ` docker run --rm \-v "${basePath}:/app" \${dockerImage} \bash -c "python main.py < input.txt"`;
+      `docker run --rm -v "${dockerPath}:/app" python-runner \ bash -c "python main.py < input.txt" `;
     }
-
     else if (language === "java") {
-      fileName = "Main.java";
-      dockerImage = "java-runner";
-      fs.writeFileSync(path.join(basePath, fileName), userCode);
-      runCommand = `
-      docker run --rm \-v "${basePath}:/app" \ ${dockerImage} \bash -c "javac Main.java && java -cp /app Main < input.txt"`;
+      fs.writeFileSync(path.join(basePath, "Main.java"), userCode);
+      runCommand = 
+      `docker run --rm -v "${dockerPath}:/app" java-runner \ bash -c "javac Main.java && java -cp /app Main < input.txt" `;
     }
             exec(runCommand, { timeout: 5000 }, (error, stdout, stderr) => {
             if(error && error.killed){
