@@ -52,6 +52,23 @@ try{
         });
         continue;
     }
+
+    if(output.trim()!==expected){
+        allPassed=false;
+        testCaseResult.push({
+            input,
+            expectdOutput:expected,
+            userOutput:output,
+            status:"wrong answer",
+        });
+        continue;
+    }
+testCaseResult.push({
+    input,
+    expectedOutput:expected,
+    userOutput:output,
+    status:"Accepted",
+});
 }catch(err){
     allPassed=false;
     testCaseResult.push({
@@ -63,7 +80,7 @@ try{
 }
 }
 return res.status(200).json({
-    message:allPassed?"all test case passed":"some test case failed",
+    message:allPassed?"all test case pass":"some test case failed",
     data:testCaseResult,
 });
 }
