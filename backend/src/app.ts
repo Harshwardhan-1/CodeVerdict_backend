@@ -19,6 +19,7 @@ import addQuestionRoutes from "./Routes/AddQuestionRoutes";
 import hiddenTestRoutes from "./Routes/AddHiddenTestCaseRoutes";
 import runCodeRoutes from "./Routes/RunCodeRoutes";
 import submitCodeRoutes from "./Routes/SubmissionRoutes";
+import { request } from "http";
 app.get("/"  , (req : Request, res : Response)=>{
   res.send("hii harsh here")
 })
@@ -31,6 +32,10 @@ app.use('/api/newQuestion',addQuestionRoutes);
 app.use('/api/hidden',hiddenTestRoutes);
 app.use('/api/run',runCodeRoutes);
 app.use('/api/submit',submitCodeRoutes);
+
+app.get('/ping',(req:Request,res:Response)=>{
+  res.send("alive");
+})
 const PORT=5000;
 app.listen(PORT,()=>{
   console.log(`Server is listening to http://localhost:${PORT}`);
