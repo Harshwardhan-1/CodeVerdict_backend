@@ -125,8 +125,9 @@ export const executeCode = (language: string, userCode: string, input: string): 
         let command = "";
         if (language === "C++") {
             filePath = path.join(basePath, `${jobId}.cpp`);
-            const exePath = path.join(basePath, `${jobId}.exe`);
+            const exePath = path.join(basePath, jobId);
             fs.writeFileSync(filePath, userCode);
+            // command = `g++ "${filePath}" -o "${exePath}" && "${exePath}" < "${inputPath}"`;
             command = `g++ "${filePath}" -o "${exePath}" && "${exePath}" < "${inputPath}"`;
         } 
         else if (language === 'Python') {
