@@ -99,8 +99,8 @@ import {Request,Response} from 'express';
 import { hiddenTestCaseModel } from '../models/AddHiddenTestCaseModel';
 import { executeCode } from '../utils/executeCode';
 export const runUserCode=async(req:Request,res:Response)=>{
-const {id,title,language,userCode}=req.body;
-if(!id || !title || !language || !userCode){
+const {title,language,userCode}=req.body;
+if( !title || !language || !userCode){
     return res.status(401).json({
         message:"provide proper detail",
     });
