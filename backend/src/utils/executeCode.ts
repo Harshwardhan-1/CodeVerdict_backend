@@ -29,15 +29,18 @@ return new Promise((resolve,reject)=>{
          command = `javac "${filePath}" && java -cp "${basePath}" Main < "${inputPath}"`;
     }
             exec(command, { timeout: 5000 }, (error, stdout, stderr) => {
-            if(error && error.killed){
-                return resolve("time limit exceeded"); 
-            } 
-            if(error && stderr && stderr.includes("error")){
-                return resolve("complile error");
-            }
-            if(error){
-                return resolve("runtime error");
-            }
+            if (error?.signal === 'SIGTERM') {
+           return resolve("time limit exceeded");
+}
+
+    if (stderr && stderr.toLowerCase().includes("error")) {
+        return resolve("complile error");
+    }
+
+  
+    if (error) {
+        return resolve("runtime error");
+    }
             return resolve(stdout.trim());
         });
 });
