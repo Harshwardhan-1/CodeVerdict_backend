@@ -28,7 +28,7 @@ return new Promise((resolve,reject)=>{
         fs.writeFileSync(filePath,userCode);
          command = `javac "${filePath}" && java -cp "${basePath}" Main < "${inputPath}"`;
     }
-            exec(command, { timeout: 5000 }, (error, stdout, stderr) => {
+            exec(command, { timeout: 25000 }, (error, stdout, stderr) => {
             if (error?.signal === 'SIGTERM') {
            return resolve("time limit exceeded");
 }
