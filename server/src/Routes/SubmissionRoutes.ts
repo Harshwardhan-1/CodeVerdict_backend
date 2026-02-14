@@ -1,0 +1,23 @@
+import { Router } from "express";
+const submitCodeRoutes=Router();
+import verifyToken from "../middleware/verifyToken";
+import verifyStudent from "../middleware/verifyStudent";
+import { submitUserCode,allSubmission,allPoints,checkSubmit,submission,heatMap,activeDays,checkStreak,checkLanguage,getSolution } from "../Controllers/SubmissionController";
+import { userOrganizeSubmitCodes } from "../Controllers/userOrganizeSubmitCode";
+import { codeVerdictContestSubmitCode } from "../Controllers/codeVerdictContestSubmitCode";
+import { showCodeVerdictLeaderBoard } from "../Controllers/codeVerdictContestSubmitCode";
+
+submitCodeRoutes.get('/allPoints',verifyToken,verifyStudent,allPoints);
+submitCodeRoutes.get('/allSubmission',verifyToken,verifyStudent,allSubmission);
+submitCodeRoutes.post("/userCode",verifyToken,verifyStudent,submitUserCode);
+submitCodeRoutes.post('/userOrganizeSubmitCode',verifyToken,verifyStudent,userOrganizeSubmitCodes);
+submitCodeRoutes.post('/CodeVerdictContestSubmitCode',verifyToken,verifyStudent,codeVerdictContestSubmitCode);
+submitCodeRoutes.post('/showCodeVerdictLeaderBoard',verifyToken,verifyStudent,showCodeVerdictLeaderBoard);
+submitCodeRoutes.post('/checkSubmit',verifyToken,verifyStudent,checkSubmit);
+submitCodeRoutes.post('/submission',verifyToken,verifyStudent,submission);
+submitCodeRoutes.get('/heatMap',verifyToken,verifyStudent,heatMap);
+submitCodeRoutes.get('/activeDays',verifyToken,verifyStudent,activeDays);
+submitCodeRoutes.get('/checkStreak',verifyToken,verifyStudent,checkStreak);
+submitCodeRoutes.get('/checklanguage',verifyToken,verifyStudent,checkLanguage);
+submitCodeRoutes.post('/getSolution',verifyToken,verifyStudent,getSolution);
+export default submitCodeRoutes;
